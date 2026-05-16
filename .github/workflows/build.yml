@@ -17,8 +17,19 @@ jobs:
         sudo apt install -y git zip unzip openjdk-17-jdk python3-full
         pip install buildozer cython
     
+    - name: Configure buildozer
+      run: |
+        # Исправляем buildozer.spec
+        sed -i 's/#android.ndk = .*/android.ndk = 25c/' buildozer.spec
+        sed -i 's/#android.api = .*/android.api = 30/' buildozer.spec
+        sed -i 's/#android.minapi = .*/android.minapi = 21/' buildozer.spec
+    
     - name: Build APK
-      run: echo "y" | buildozer android debug
+      run: |
+        # Принимаем лицензии
+        yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
+        # Собираем
+        echo "y" | buildozer android debug
     
     - name: Upload APK
       uses: actions/upload-artifact@v4
