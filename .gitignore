@@ -1,0 +1,14 @@
+.buildozer/
+venv/
+__pycache__/
+*.pyc
+*.apk
+*.zip
+.buildozer/
+venv/
+*.apk
+__pycache__/
+.buildozer/
+venv/
+*.apk
+__pycache__/
