@@ -14,12 +14,19 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y git zip unzip openjdk-17-jdk python3-full autoconf libtool pkg-config
+        sudo apt install -y git zip unzip openjdk-17-jdk python3-full
         pip install buildozer cython
     
     - name: Build APK
       run: |
+        # Используем старую версию python-for-android
+        rm -rf .buildozer/android/platform/python-for-android
+        git clone -b 2024.1.4 https://github.com/kivy/python-for-android.git .buildozer/android/platform/python-for-android
+        
+        # Принимаем лицензии
         yes | ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
+        
+        # Сборка
         echo "y" | buildozer android debug
     
     - name: Upload APK
